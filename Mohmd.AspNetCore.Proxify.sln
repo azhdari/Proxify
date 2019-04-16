@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mohmd.AspNetCore.Proxify", "Mohmd.AspNetCore.Proxify\Mohmd.AspNetCore.Proxify.csproj", "{37A80E73-2E14-4125-91D6-C1464137DBE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mohmd.AspNetCore.Proxify.Exmaple", "Mohmd.AspNetCore.Proxify.Exmaple\Mohmd.AspNetCore.Proxify.Exmaple.csproj", "{2CD33FA1-721F-4D65-96E3-6C2333560EA6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{37A80E73-2E14-4125-91D6-C1464137DBE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37A80E73-2E14-4125-91D6-C1464137DBE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37A80E73-2E14-4125-91D6-C1464137DBE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37A80E73-2E14-4125-91D6-C1464137DBE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CD33FA1-721F-4D65-96E3-6C2333560EA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CD33FA1-721F-4D65-96E3-6C2333560EA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CD33FA1-721F-4D65-96E3-6C2333560EA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CD33FA1-721F-4D65-96E3-6C2333560EA6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6BFB43CC-869D-436A-AB9B-178C76CE51DB}
+	EndGlobalSection
+EndGlobal
