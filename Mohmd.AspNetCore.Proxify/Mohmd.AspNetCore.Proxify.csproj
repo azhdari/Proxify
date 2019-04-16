@@ -7,9 +7,9 @@
     <Product>Proxify</Product>
     <Description>Add proxy layers to logic of the project for ASP.NET Core 2.0 and later</Description>
     <PackageLicenseExpression />
-    <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <PackageProjectUrl>https://github.com/azhdari/Mohmd.AspNetCore.Proxify</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/azhdari/Mohmd.AspNetCore.Proxify</RepositoryUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/azhdari/proxify</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/azhdari/proxify</RepositoryUrl>
     <RepositoryType>GIT</RepositoryType>
     <Copyright>Copyright (c) 2019 Mohammad Azhdari</Copyright>
     <PackageTags>aspnetcore, proxy, aop</PackageTags>
@@ -17,6 +17,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
