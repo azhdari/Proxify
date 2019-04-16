@@ -1,10 +1,17 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Mohmd.AspNetCore.Proxify.Internal
 {
     public class Invocation : IInvocation
     {
+        #region Fields
+
+        private TaskCompletionSource<int> _taskCompletionSource;
+
+        #endregion
+
         #region Ctors
 
         public Invocation(object decoratedObject, MethodInfo method, object[] arguments)
@@ -55,14 +62,18 @@ namespace Mohmd.AspNetCore.Proxify.Internal
 
         #region Methods
 
-        public void Proceed()
+        public Task Proceed()
         {
+            _taskCompletionSource = new TaskCompletionSource<int>();
+
             Proceeded?.Invoke(this, EventArgs.Empty);
+            return _taskCompletionSource.Task;
         }
 
         public void SetReturnValue(object value)
         {
             ReturnValue = value;
+            _taskCompletionSource?.SetResult(0);
         }
 
         #endregion

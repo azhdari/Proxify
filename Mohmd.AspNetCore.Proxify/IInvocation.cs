@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Mohmd.AspNetCore.Proxify
 {
@@ -17,6 +18,6 @@ namespace Mohmd.AspNetCore.Proxify
 
         object ReturnValue { get; }
 
-        void Proceed();
+        Task Proceed();
     }
 }

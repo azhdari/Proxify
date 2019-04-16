@@ -80,16 +80,20 @@ namespace Mohmd.AspNetCore.Proxify
 
                 if (interceptor != null)
                 {
-                    interceptor.Intercept(invocation);
-
-                    if (thisLoopIndex != index)
-                    {
-                        // interceptor has call Proceed()
-                        return;
-                    }
+                    interceptor.Intercept(invocation)
+                        .ContinueWith(prev =>
+                        {
+                            if (thisLoopIndex == index)
+                            {
+                                // interceptor has not call Proceed()
+                                Final();
+                            }
+                        });
                 }
-
-                Final();
+                else
+                {
+                    Final();
+                }
             }
 
             if (interceptors.Any())
@@ -97,7 +101,7 @@ namespace Mohmd.AspNetCore.Proxify
                 Proceed();
             }
 
-            return methodReturnValue;
+            return methodReturnValue ?? 10000;
         }
 
         protected object InvokeOld(MethodInfo targetMethod, object[] args)

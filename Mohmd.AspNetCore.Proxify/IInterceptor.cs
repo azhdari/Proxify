@@ -1,10 +1,12 @@
-﻿namespace Mohmd.AspNetCore.Proxify
+﻿using System.Threading.Tasks;
+
+namespace Mohmd.AspNetCore.Proxify
 {
     public interface IInterceptor
     {
         int Priority { get; }
 
-        void Intercept(IInvocation invocation);
+        Task Intercept(IInvocation invocation);
 
         void InvokeBefore(IInvocation invocation);
 

@@ -25,6 +25,8 @@ namespace Mohmd.AspNetCore.Proxify.Exmaple.Controllers
             await _sampleService.SumAsync(1, 2);
             await _sampleService.SetName("Mohammad Azhdari");
             object name = await _sampleService.GetName();
+
+            //object name = "MMM";
             return View(name);
         }
 

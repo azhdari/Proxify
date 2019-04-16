@@ -2,8 +2,9 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading.Tasks;
 
-namespace Mohmd.AspNetCore.Proxify.Exmaple.ProxyLayers
+namespace Mohmd.AspNetCore.Proxify.Exmaple.Insterceptors
 {
     public class ProfilingInsterceptor : IInterceptor
     {
@@ -30,20 +31,20 @@ namespace Mohmd.AspNetCore.Proxify.Exmaple.ProxyLayers
 
         public void InvokeOnException(IInvocation invocation)
         {
-            
+
         }
 
-        public void Intercept(IInvocation invocation)
+        public async Task Intercept(IInvocation invocation)
         {
             try
             {
                 _stopwatch.Start();
-                invocation.Proceed();
+                await invocation.Proceed();
             }
             finally
             {
                 _stopwatch.Stop();
-                _logger.LogWarning($"@@@ (Intercept) Invoking method {invocation.Method.Name} took {_stopwatch.Elapsed.ToString()} with result of {invocation.ReturnValue}");
+                _logger.LogInformation($"@@@ (Intercept) Invoking `{invocation.Method.Name}` took {_stopwatch.Elapsed.ToString()} = `{invocation.ReturnValue}`.");
             }
         }
     }

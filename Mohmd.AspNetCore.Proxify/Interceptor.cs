@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Mohmd.AspNetCore.Proxify
 {
@@ -22,7 +23,7 @@ namespace Mohmd.AspNetCore.Proxify
             throw new NotImplementedException();
         }
 
-        public void Intercept(IInvocation invocation)
+        public Task Intercept(IInvocation invocation)
         {
             throw new NotImplementedException();
         }

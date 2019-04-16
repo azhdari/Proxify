@@ -11,7 +11,7 @@ namespace Mohmd.AspNetCore.Proxify.Exmaple.Services
 
         public int Sum(int a, int b)
         {
-            throw new Exception("TEST TEST");
+            //throw new Exception("TEST TEST");
             return a + b;
         }
 

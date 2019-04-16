@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace Mohmd.AspNetCore.Proxify.Exmaple.Insterceptors
 {
@@ -28,21 +29,22 @@ namespace Mohmd.AspNetCore.Proxify.Exmaple.Insterceptors
             _logger.LogError(invocation.Exception, $"### Error Method {invocation.Method.Name}");
         }
 
-        public void Intercept(IInvocation invocation)
+        public async Task Intercept(IInvocation invocation)
         {
+            var name = invocation.Method.Name;
             try
             {
-                _logger.LogInformation($"### (Intercept) Before Method {invocation.Method.Name}");
-                invocation.Proceed();
+                _logger.LogInformation($"### (Intercept) Before `{invocation.Method.Name}`.");
+                await invocation.Proceed();
             }
             catch (System.Exception ex)
             {
-                _logger.LogError(ex, $"### (Intercept) Error Method {invocation.Method.Name}");
+                _logger.LogError(ex, $"### (Intercept) Error `{invocation.Method.Name}`.");
                 throw ex;
             }
             finally
             {
-                _logger.LogInformation($"### (Intercept) After Method {invocation.Method.Name} with result of {invocation.ReturnValue}");
+                _logger.LogInformation($"### (Intercept) After `{invocation.Method.Name}` = `{invocation.ReturnValue}`.");
             }
         }
     }
