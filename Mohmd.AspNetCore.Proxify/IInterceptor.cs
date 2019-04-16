@@ -4,6 +4,8 @@
     {
         int Priority { get; }
 
+        void Intercept(IInvocation invocation);
+
         void InvokeBefore(IInvocation invocation);
 
         void InvokeAfter(IInvocation invocation);

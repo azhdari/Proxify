@@ -18,7 +18,89 @@ namespace Mohmd.AspNetCore.Proxify
         private IServiceProvider _serviceProvider;
         private ConcurrentDictionary<string, IInterceptor[]> _layers = new ConcurrentDictionary<string, IInterceptor[]>();
 
-        protected override object Invoke(MethodInfo targetMethod, object[] args)
+        protected override object Invoke(MethodInfo methodInfo, object[] args)
+        {
+            if (methodInfo == null)
+            {
+                return null;
+            }
+
+            var interceptors = GetLayers(methodInfo)
+                .OrderBy(x => x.Priority)
+                .ToArray();
+
+            int index = -1;
+
+            Invocation invocation = new Invocation(_decorated, methodInfo, args);
+            invocation.Proceeded += (sender, e) =>
+            {
+                Proceed();
+            };
+
+            object methodReturnValue = null;
+
+            void Final()
+            {
+                var result = methodInfo.Invoke(_decorated, args);
+                methodReturnValue = result;
+
+                if (result is Task resultTask)
+                {
+                    resultTask.ContinueWith(task =>
+                    {
+                        if (task.Exception == null)
+                        {
+                            object taskResult = null;
+
+                            if (task.GetType().GetTypeInfo().IsGenericType)
+                            {
+                                taskResult = task
+                                    .GetType()
+                                    .GetTypeInfo()
+                                    .GetProperties()
+                                    .FirstOrDefault(p => p.Name == "Result")?
+                                    .GetValue(task);
+                            }
+
+                            invocation.SetReturnValue(taskResult);
+                        }
+                    });
+                }
+                else
+                {
+                    invocation.SetReturnValue(result);
+                }
+            }
+
+            void Proceed()
+            {
+                index += 1;
+                int thisLoopIndex = index;
+                var interceptor = interceptors.ElementAtOrDefault(index);
+
+                if (interceptor != null)
+                {
+                    interceptor.Intercept(invocation);
+
+                    if (thisLoopIndex != index)
+                    {
+                        // interceptor has call Proceed()
+                        return;
+                    }
+                }
+
+                Final();
+            }
+
+            if (interceptors.Any())
+            {
+                Proceed();
+            }
+
+            return methodReturnValue;
+        }
+
+        protected object InvokeOld(MethodInfo targetMethod, object[] args)
         {
             if (targetMethod != null)
             {

@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <Authors>Mohammad Azhdari</Authors>
     <Product>Proxify</Product>
-    <Description>Add proxy layers to logic of the project for ASP.NET Core 2.0 and later</Description>
+    <Description>Simple, Fast and reliable Dynamic Proxy for ASP.NET Core 2.0 and later</Description>
     <PackageLicenseExpression />
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/azhdari/proxify</PackageProjectUrl>
@@ -17,13 +17,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
   </ItemGroup>
 
 </Project>

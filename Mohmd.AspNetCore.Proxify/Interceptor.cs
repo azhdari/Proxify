@@ -21,5 +21,10 @@ namespace Mohmd.AspNetCore.Proxify
         {
             throw new NotImplementedException();
         }
+
+        public void Intercept(IInvocation invocation)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

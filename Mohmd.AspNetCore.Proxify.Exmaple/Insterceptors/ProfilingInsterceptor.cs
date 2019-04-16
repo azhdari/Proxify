@@ -25,13 +25,26 @@ namespace Mohmd.AspNetCore.Proxify.Exmaple.ProxyLayers
         public void InvokeAfter(IInvocation invocation)
         {
             _stopwatch.Stop();
-
-            _logger.LogWarning($"@@@ Invoking method {invocation.Method.Name} took {_stopwatch.Elapsed.ToString()} with result of {invocation.Result}");
+            _logger.LogWarning($"@@@ Invoking method {invocation.Method.Name} took {_stopwatch.Elapsed.ToString()} with result of {invocation.ReturnValue}");
         }
 
         public void InvokeOnException(IInvocation invocation)
         {
             
+        }
+
+        public void Intercept(IInvocation invocation)
+        {
+            try
+            {
+                _stopwatch.Start();
+                invocation.Proceed();
+            }
+            finally
+            {
+                _stopwatch.Stop();
+                _logger.LogWarning($"@@@ (Intercept) Invoking method {invocation.Method.Name} took {_stopwatch.Elapsed.ToString()} with result of {invocation.ReturnValue}");
+            }
         }
     }
 }

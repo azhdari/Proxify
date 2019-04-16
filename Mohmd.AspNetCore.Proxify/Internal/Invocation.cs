@@ -5,6 +5,8 @@ namespace Mohmd.AspNetCore.Proxify.Internal
 {
     public class Invocation : IInvocation
     {
+        #region Ctors
+
         public Invocation(object decoratedObject, MethodInfo method, object[] arguments)
             : this(decoratedObject, method, arguments, null, null)
         {
@@ -26,8 +28,18 @@ namespace Mohmd.AspNetCore.Proxify.Internal
             Method = method;
             Arguments = arguments;
             Exception = exception;
-            Result = result;
+            ReturnValue = result;
         }
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler Proceeded;
+
+        #endregion
+
+        #region Properties
 
         public object DecoratedObject { get; private set; }
 
@@ -37,6 +49,22 @@ namespace Mohmd.AspNetCore.Proxify.Internal
 
         public Exception Exception { get; private set; }
 
-        public object Result { get; private set; }
+        public object ReturnValue { get; private set; }
+
+        #endregion
+
+        #region Methods
+
+        public void Proceed()
+        {
+            Proceeded?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void SetReturnValue(object value)
+        {
+            ReturnValue = value;
+        }
+
+        #endregion
     }
 }
