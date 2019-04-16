@@ -11,11 +11,12 @@ using System.Threading.Tasks;
 namespace Mohmd.AspNetCore.Proxify
 {
     public class DispatchProxy<T> : DispatchProxy
+        where T : class
     {
         private T _decorated;
         private ILogger _logger;
         private IServiceProvider _serviceProvider;
-        private ConcurrentDictionary<string, ILayer[]> _layers = new ConcurrentDictionary<string, ILayer[]>();
+        private ConcurrentDictionary<string, IInterceptor[]> _layers = new ConcurrentDictionary<string, IInterceptor[]>();
 
         protected override object Invoke(MethodInfo targetMethod, object[] args)
         {
@@ -25,7 +26,7 @@ namespace Mohmd.AspNetCore.Proxify
                 {
                     try
                     {
-                        Run(LayerPosition.Before, targetMethod, args, null);
+                        Run(InterceptorStep.Before, targetMethod, args, null);
                     }
                     catch (Exception ex)
                     {
@@ -40,7 +41,7 @@ namespace Mohmd.AspNetCore.Proxify
                             {
                                 if (task.Exception != null)
                                 {
-                                    Run(LayerPosition.OnException, targetMethod, args, task.Exception.InnerException ?? task.Exception);
+                                    Run(InterceptorStep.OnException, targetMethod, args, task.Exception.InnerException ?? task.Exception);
                                 }
                                 else
                                 {
@@ -55,7 +56,7 @@ namespace Mohmd.AspNetCore.Proxify
                                         }
                                     }
 
-                                    Run(LayerPosition.After, targetMethod, args, null, taskResult);
+                                    Run(InterceptorStep.After, targetMethod, args, null, taskResult);
                                 }
                             });
                     }
@@ -63,7 +64,7 @@ namespace Mohmd.AspNetCore.Proxify
                     {
                         try
                         {
-                            Run(LayerPosition.After, targetMethod, args, null, result);
+                            Run(InterceptorStep.After, targetMethod, args, null, result);
                         }
                         catch (Exception ex)
                         {
@@ -78,7 +79,7 @@ namespace Mohmd.AspNetCore.Proxify
                 {
                     if (ex is TargetInvocationException)
                     {
-                        Run(LayerPosition.OnException, targetMethod, args, ex.InnerException ?? ex);
+                        Run(InterceptorStep.OnException, targetMethod, args, ex.InnerException ?? ex);
                         throw ex.InnerException ?? ex;
                     }
                 }
@@ -108,42 +109,53 @@ namespace Mohmd.AspNetCore.Proxify
             _serviceProvider = serviceProvider;
         }
 
-        private void Run(LayerPosition position, MethodInfo targetMethod, object[] args, Exception exception = null, object result = null)
+        private void Run(InterceptorStep position, MethodInfo targetMethod, object[] args, Exception exception = null, object result = null)
         {
-            var layers = GetLayers(targetMethod);
+            var interceptors = GetLayers(targetMethod);
+
+            if (position == InterceptorStep.Before)
+            {
+                interceptors = interceptors.OrderBy(x => x.Priority).ToArray();
+            }
+            else
+            {
+                interceptors = interceptors.OrderByDescending(x => x.Priority).ToArray();
+            }
+
+            IInvocation invocation = new Invocation(_decorated, targetMethod, args, exception, result);
 
             switch (position)
             {
-                case LayerPosition.Before:
-                    foreach (var item in layers)
+                case InterceptorStep.Before:
+                    foreach (var item in interceptors)
                     {
                         try
                         {
-                            item.InvokeBefore(targetMethod, args);
+                            item.InvokeBefore(invocation);
                         }
                         catch (NotImplementedException)
                         {
                         }
                     }
                     break;
-                case LayerPosition.After:
-                    foreach (var item in layers)
+                case InterceptorStep.After:
+                    foreach (var item in interceptors)
                     {
                         try
                         {
-                            item.InvokeAfter(targetMethod, args, result);
+                            item.InvokeAfter(invocation);
                         }
                         catch (NotImplementedException)
                         {
                         }
                     }
                     break;
-                case LayerPosition.OnException:
-                    foreach (var item in layers)
+                case InterceptorStep.OnException:
+                    foreach (var item in interceptors)
                     {
                         try
                         {
-                            item.InvokeOnException(targetMethod, exception);
+                            item.InvokeOnException(invocation);
                         }
                         catch (NotImplementedException)
                         {
@@ -153,20 +165,20 @@ namespace Mohmd.AspNetCore.Proxify
             }
         }
 
-        private ILayer[] GetLayers(MethodInfo targetMethod)
+        private IInterceptor[] GetLayers(MethodInfo targetMethod)
         {
             string key = $"{_decorated.GetType().Name}{targetMethod.Name}";
             if (!_layers.TryGetValue(key, out var layers))
             {
                 layers = ProxifyContext
                     .LayerTypes
-                    .Select(type => ActivatorUtilities.CreateInstance(_serviceProvider, type) as ILayer)
+                    .Select(type => ActivatorUtilities.CreateInstance(_serviceProvider, type) as IInterceptor)
                     .ToArray();
 
                 _layers.TryAdd(key, layers);
             }
 
-            return layers ?? new ILayer[0];
+            return layers ?? new IInterceptor[0];
         }
 
         private void LogException(Exception exception, MethodInfo methodInfo = null)

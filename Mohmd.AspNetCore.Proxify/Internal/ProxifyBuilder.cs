@@ -35,7 +35,7 @@ namespace Mohmd.AspNetCore.Proxify.Internal
 
         public IServiceCollection Build()
         {
-            Type[] baseTypes = new[] { typeof(ILayer), typeof(BaseLayer) };
+            Type[] baseTypes = new[] { typeof(IInterceptor), typeof(Interceptor) };
             Type[] layers = _assemblyList
                 .SelectMany(assembly => assembly.GetTypes())
                 .Where(type => baseTypes.Any(baseType => baseType.IsAssignableFrom(type) && type != baseType))

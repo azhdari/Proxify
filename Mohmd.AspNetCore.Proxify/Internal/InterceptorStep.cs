@@ -1,6 +1,6 @@
 ﻿namespace Mohmd.AspNetCore.Proxify.Internal
 {
-    internal enum LayerPosition : int
+    internal enum InterceptorStep : int
     {
         Before = 0,
         After = 10,
