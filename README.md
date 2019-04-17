@@ -2,6 +2,7 @@
 Easily add actions Before, After and OnExceptions on your logic methods.
 
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://github.com/azhdari/Mohmd.JsonResources/blob/master/License.txt)
+[![NuGet](https://img.shields.io/badge/nuget-1.1.0-blue.svg?style=flat-square)](https://www.nuget.org/packages/Mohmd.AspNetCore.Proxify/1.1.0)
 
 ## Getting Started
 Use these instructions to get the package and use it.
