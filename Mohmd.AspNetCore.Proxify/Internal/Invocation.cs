@@ -64,6 +64,7 @@ namespace Mohmd.AspNetCore.Proxify.Internal
 
         public Task Proceed()
         {
+            // this line must be before invoking event, SetReturnValue() might be called before that. 
             _taskCompletionSource = new TaskCompletionSource<int>();
 
             Proceeded?.Invoke(this, EventArgs.Empty);
@@ -74,6 +75,11 @@ namespace Mohmd.AspNetCore.Proxify.Internal
         {
             ReturnValue = value;
             _taskCompletionSource?.SetResult(0);
+        }
+
+        public void SetException(Exception exception)
+        {
+            this.Exception = exception;
         }
 
         #endregion

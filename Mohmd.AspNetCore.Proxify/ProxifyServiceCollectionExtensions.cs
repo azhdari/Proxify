@@ -46,8 +46,7 @@ namespace Microsoft.Extensions.DependencyInjection
             where TImplementation : class, TService
         {
             var instance = ActivatorUtilities.CreateInstance<TImplementation>(serviceProvider);
-            var logger = serviceProvider.GetService<ILogger<TService>>();
-            var result = DispatchProxy<TService>.Create(instance, logger, serviceProvider);
+            var result = DispatchProxy<TService>.Create(instance, serviceProvider);
             return result;
         }
     }

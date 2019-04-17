@@ -36,15 +36,15 @@ namespace Mohmd.AspNetCore.Proxify.Internal
         public IServiceCollection Build()
         {
             Type[] baseTypes = new[] { typeof(IInterceptor), typeof(Interceptor) };
-            Type[] layers = _assemblyList
+            Type[] interceptors = _assemblyList
                 .SelectMany(assembly => assembly.GetTypes())
                 .Where(type => baseTypes.Any(baseType => baseType.IsAssignableFrom(type) && type != baseType))
                 .Distinct()
                 .ToArray();
 
-            ProxifyContext.LayerTypes.AddRange(layers);
+            ProxifyContext.InterceptorTypes.AddRange(interceptors);
 
-            foreach (var type in layers)
+            foreach (var type in interceptors)
             {
                 _services.AddTransient(type);
             }

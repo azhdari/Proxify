@@ -9,9 +9,12 @@ namespace Mohmd.AspNetCore.Proxify.Exmaple.Services
     {
         private string _name = string.Empty;
 
+        public void VoidMethod()
+        {
+        }
+
         public int Sum(int a, int b)
         {
-            //throw new Exception("TEST TEST");
             return a + b;
         }
 

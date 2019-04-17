@@ -33,6 +33,11 @@ namespace Mohmd.AspNetCore.Proxify.Exmaple
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.AddSeq();
+            });
+
             services.AddProxify()
                 .AddAssemblyByType<Startup>()
                 .Build()

@@ -20,6 +20,8 @@ namespace Mohmd.AspNetCore.Proxify.Exmaple.Controllers
 
         public async Task<IActionResult> Index()
         {
+            _sampleService.VoidMethod();
+
             var x = _sampleService.Sum(1, 3);
 
             await _sampleService.SumAsync(1, 2);

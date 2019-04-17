@@ -5,6 +5,6 @@ namespace Mohmd.AspNetCore.Proxify.Internal
 {
     internal static class ProxifyContext
     {
-        public static List<Type> LayerTypes { get; } = new List<Type>();
+        public static List<Type> InterceptorTypes { get; } = new List<Type>();
     }
 }

@@ -7,6 +7,8 @@ namespace Mohmd.AspNetCore.Proxify.Exmaple.Services
 {
     public interface ISampleService
     {
+        void VoidMethod();
+
         int Sum(int a, int b);
 
         Task<int> SumAsync(int a, int b);

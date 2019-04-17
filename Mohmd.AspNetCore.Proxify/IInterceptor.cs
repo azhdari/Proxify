@@ -7,11 +7,5 @@ namespace Mohmd.AspNetCore.Proxify
         int Priority { get; }
 
         Task Intercept(IInvocation invocation);
-
-        void InvokeBefore(IInvocation invocation);
-
-        void InvokeAfter(IInvocation invocation);
-
-        void InvokeOnException(IInvocation invocation);
     }
 }

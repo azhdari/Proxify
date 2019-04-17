@@ -14,8 +14,6 @@ namespace Mohmd.AspNetCore.Proxify
 
         object[] Arguments { get; }
 
-        Exception Exception { get; }
-
         object ReturnValue { get; }
 
         Task Proceed();
