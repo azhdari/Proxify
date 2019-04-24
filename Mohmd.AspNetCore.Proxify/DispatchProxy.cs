@@ -25,6 +25,11 @@ namespace Mohmd.AspNetCore.Proxify
                 .OrderBy(x => x.Priority)
                 .ToArray();
 
+            if (!interceptors.Any())
+            {
+                return methodInfo.Invoke(_decorated, args);
+            }
+
             int index = -1;
 
             Invocation invocation = new Invocation(_decorated, methodInfo, args);
@@ -113,10 +118,7 @@ namespace Mohmd.AspNetCore.Proxify
                 }
             }
 
-            if (interceptors.Any())
-            {
-                Proceed();
-            }
+            Proceed();
 
             lastTask?.Wait();
 
