@@ -17,13 +17,12 @@ namespace Mohmd.AspNetCore.Proxify.Exmaple.Insterceptors
 
         public async Task Intercept(IInvocation invocation)
         {
-            var name = invocation.Method.Name;
             try
             {
                 _logger.LogInformation($"# (Intercept) Before {invocation.Method.Name}.");
                 await invocation.Proceed();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, $"# (Intercept) Error {invocation.Method.Name}.");
                 throw ex;

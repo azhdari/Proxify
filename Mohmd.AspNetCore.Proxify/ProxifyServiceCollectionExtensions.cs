@@ -2,6 +2,7 @@
 using Mohmd.AspNetCore.Proxify;
 using Mohmd.AspNetCore.Proxify.Internal;
 using System;
+using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -25,6 +26,15 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
 
+        public static IServiceCollection AddTransientProxyService(this IServiceCollection services, Type interfaceType, Type implementType)
+        {
+            MethodInfo method = typeof(ProxifyServiceCollectionExtensions).GetMethod("AddTransientProxyService");
+            MethodInfo genericMethod = method.MakeGenericMethod(interfaceType, implementType);
+            genericMethod.Invoke(null, new object[] { services });
+
+            return services;
+        }
+
         public static IServiceCollection AddScopedProxyService<TService, TImplementation>(this IServiceCollection services)
             where TService : class
             where TImplementation : class, TService
@@ -33,11 +43,29 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
 
+        public static IServiceCollection AddScopedProxyService(this IServiceCollection services, Type interfaceType, Type implementType)
+        {
+            MethodInfo method = typeof(ProxifyServiceCollectionExtensions).GetMethod("AddScopedProxyService");
+            MethodInfo genericMethod = method.MakeGenericMethod(interfaceType, implementType);
+            genericMethod.Invoke(null, new object[] { services });
+
+            return services;
+        }
+
         public static IServiceCollection AddSingletonProxyService<TService, TImplementation>(this IServiceCollection services)
             where TService : class
             where TImplementation : class, TService
         {
             services.AddSingleton(AddProxyService<TService, TImplementation>);
+            return services;
+        }
+
+        public static IServiceCollection AddSingletonProxyService(this IServiceCollection services, Type interfaceType, Type implementType)
+        {
+            MethodInfo method = typeof(ProxifyServiceCollectionExtensions).GetMethod("AddSingletonProxyService");
+            MethodInfo genericMethod = method.MakeGenericMethod(interfaceType, implementType);
+            genericMethod.Invoke(null, new object[] { services });
+
             return services;
         }
 
