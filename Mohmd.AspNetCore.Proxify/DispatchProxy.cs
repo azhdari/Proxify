@@ -1,4 +1,5 @@
-﻿using Mohmd.AspNetCore.Proxify.Internal;
+﻿using Mohmd.AspNetCore.Proxify.Attributes;
+using Mohmd.AspNetCore.Proxify.Internal;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
@@ -167,7 +168,40 @@ namespace Mohmd.AspNetCore.Proxify
                 _interceptors.TryAdd(key, interceptors);
             }
 
-            return interceptors ?? new IInterceptor[0];
+            interceptors = interceptors ?? new IInterceptor[0];
+
+            var attrs = targetMethod.GetCustomAttributes(true);
+
+            ApplyInterceptorsAttribute applyInterceptors = targetMethod.GetCustomAttribute<ApplyInterceptorsAttribute>();
+            IgnoreInterceptorsAttribute ignoreInterceptors = targetMethod.GetCustomAttribute<IgnoreInterceptorsAttribute>();
+
+            if (applyInterceptors?.Interceptors?.Count > 0)
+            {
+                interceptors = interceptors
+                    .Where(intcp => applyInterceptors.Interceptors.Contains(intcp.GetType()))
+                    .ToArray();
+            }
+
+            if (ignoreInterceptors != null)
+            {
+                if (ignoreInterceptors.Interceptors?.Count > 0)
+                {
+                    Type[] types = interceptors
+                        .Select(x => x.GetType())
+                        .Except(ignoreInterceptors.Interceptors)
+                        .ToArray();
+
+                    interceptors = interceptors
+                        .Where(intcp => types.Contains(intcp.GetType()))
+                        .ToArray();
+                }
+                else
+                {
+                    return new IInterceptor[0];
+                }
+            }
+
+            return interceptors;
         }
     }
 }
