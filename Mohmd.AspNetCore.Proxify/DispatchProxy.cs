@@ -67,6 +67,10 @@ namespace Mohmd.AspNetCore.Proxify
 
                             invocation.SetReturnValue(taskResult);
                         }
+                        else
+                        {
+                            invocation.SetException(task.Exception);
+                        }
                     });
                 }
                 else
@@ -83,27 +87,28 @@ namespace Mohmd.AspNetCore.Proxify
 
                 if (interceptor != null)
                 {
-                    lastTask = interceptor.Intercept(invocation);
-                    lastTask.ContinueWith(prev =>
-                    {
-                        if (prev.IsFaulted && invocation.Exception == null)
+                    lastTask = interceptor
+                        .Intercept(invocation)
+                        .ContinueWith(prev =>
                         {
-                            if (prev.Exception is AggregateException aggregateException)
+                            if (prev.IsFaulted && invocation.Exception == null)
                             {
-                                invocation.SetException(aggregateException.InnerException);
+                                if (prev.Exception is AggregateException aggregateException)
+                                {
+                                    invocation.SetException(aggregateException.InnerException);
+                                }
+                                else
+                                {
+                                    invocation.SetException(prev.Exception);
+                                }
                             }
-                            else
-                            {
-                                invocation.SetException(prev.Exception);
-                            }
-                        }
 
-                        if (thisLoopIndex == index)
-                        {
-                            // interceptor has not call Proceed()
-                            Final();
-                        }
-                    });
+                            if (thisLoopIndex == index)
+                            {
+                                // interceptor has not call Proceed()
+                                Final();
+                            }
+                        });
                 }
                 else
                 {

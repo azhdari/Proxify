@@ -23,6 +23,7 @@ namespace Mohmd.AspNetCore.Proxify.Exmaple.Services
         public async Task<int> SumAsync(int a, int b)
         {
             await Task.Delay(1000);
+            new InnerService().Method();
             return a + b;
         }
 

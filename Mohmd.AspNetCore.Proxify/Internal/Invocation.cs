@@ -79,7 +79,8 @@ namespace Mohmd.AspNetCore.Proxify.Internal
 
         public void SetException(Exception exception)
         {
-            this.Exception = exception;
+            Exception = exception;
+            _taskCompletionSource?.SetException(exception);
         }
 
         #endregion
