@@ -2,7 +2,7 @@
 Simple, Fast and reliable Dynamic Proxy for ASP.NET Core 2.0 and later
 
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://github.com/azhdari/Mohmd.JsonResources/blob/master/License.txt)
-[![NuGet](https://img.shields.io/badge/nuget-1.1.2-blue.svg?style=flat-square)](https://www.nuget.org/packages/Mohmd.AspNetCore.Proxify/1.1.2)
+[![NuGet](https://img.shields.io/badge/nuget-1.3.0-blue.svg?style=flat-square)](https://www.nuget.org/packages/Mohmd.AspNetCore.Proxify/1.3.0)
 
 ## Getting Started
 Use these instructions to get the package and use it.
