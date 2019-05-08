@@ -13,7 +13,9 @@ namespace Mohmd.AspNetCore.Proxify.Exmaple.Services
 
         int Sum(int a, int b);
 
-        [ApplyInterceptors(typeof(ProfilingInsterceptor))]
+        Guid? GetSampleGuid();
+
+        //[ApplyInterceptors(typeof(ProfilingInsterceptor))]
         Task<int> SumAsync(int a, int b);
 
         [IgnoreInterceptors(typeof(ProfilingInsterceptor))]

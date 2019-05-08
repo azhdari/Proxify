@@ -20,6 +20,11 @@ namespace Mohmd.AspNetCore.Proxify.Exmaple.Services
             return a + b;
         }
 
+        public Guid? GetSampleGuid()
+        {
+            return null;
+        }
+
         public async Task<int> SumAsync(int a, int b)
         {
             await Task.Delay(1000);

@@ -21,6 +21,7 @@ namespace Mohmd.AspNetCore.Proxify.Exmaple.Controllers
         public async Task<IActionResult> Index()
         {
             await _sampleService.SumAsync(1, 2);
+            //var guid = _sampleService.GetSampleGuid();
             return View();
         }
 

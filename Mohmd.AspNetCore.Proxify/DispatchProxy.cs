@@ -138,11 +138,6 @@ namespace Mohmd.AspNetCore.Proxify
                 throw lastTask.Exception;
             }
 
-            if (methodReturnValue == null && methodInfo.ReturnType != typeof(void))
-            {
-                throw new Exception("An exception happened");
-            }
-
             return methodReturnValue;
         }
 
